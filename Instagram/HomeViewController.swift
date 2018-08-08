@@ -19,6 +19,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     var observing = false
     //編集されたコメント
     var commentData = ""
+     var temp = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -91,6 +92,8 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         print("設定されたよ")
         return cell
     }
+   
+    
     
     @objc func hundleButton(_ sender: UIButton, forEvent event: UIEvent) {
         print("DEBUG_PRINT: likeボタンがタップされました")
@@ -98,6 +101,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let point = touch!.location(in: self.tableView)
         let indexPath = tableView.indexPathForRow(at: point)
         let postData = postArrey[indexPath!.row]
+       
         if let uid = Auth.auth().currentUser?.uid {
             if postData.isLiked {
                 var index = -1
@@ -125,6 +129,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let indexPath = tableView.indexPathForRow(at: point)
         //配列からタップされたインデックスデータを取り出す
         let postData = postArrey[indexPath!.row]
+        temp = indexPath!.row
         let uid = Auth.auth().currentUser?.uid
         postData.commentButton.append(uid!)
         //CommentViewControllerへ遷移
@@ -132,8 +137,6 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let commentView = storyboard.instantiateViewController(withIdentifier: "Comment")
         self.present(commentView, animated: true, completion: nil)
     }
-    
-    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -144,7 +147,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     @IBAction func unwind(_ segue: UIStoryboardSegue) {
         let name = Auth.auth().currentUser!.displayName
         let message = "\(commentData) :\(name!)"
-        let postData = postArrey[0]
+        let postData = postArrey[temp]
         postData.comment.append(message)
         let postRef = Database.database().reference().child(Const.PostPath).child(postData.id!)
         let comment = ["comment": postData.comment]

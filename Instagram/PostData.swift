@@ -21,8 +21,7 @@ class PostData: NSObject {
     var isLiked: Bool = false
     ///コメントの追加
     var comment: [String] = []
-    ///コメント展開ボタンの設定
-    var commentOpenButton: [String] = []
+    
     ///コメントのボタン
     var commentButton: [String] = []
     
