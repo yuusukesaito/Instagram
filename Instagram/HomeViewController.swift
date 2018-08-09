@@ -19,7 +19,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     var observing = false
     //編集されたコメント
     var commentData = ""
-     var temp = 0
+    var temp = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -92,7 +92,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         print("設定されたよ")
         return cell
     }
-   
+    
     
     
     @objc func hundleButton(_ sender: UIButton, forEvent event: UIEvent) {
@@ -101,7 +101,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let point = touch!.location(in: self.tableView)
         let indexPath = tableView.indexPathForRow(at: point)
         let postData = postArrey[indexPath!.row]
-       
+        
         if let uid = Auth.auth().currentUser?.uid {
             if postData.isLiked {
                 var index = -1
@@ -148,11 +148,13 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let name = Auth.auth().currentUser!.displayName
         let message = "\(commentData) :\(name!)"
         let postData = postArrey[temp]
-        postData.comment.append(message)
-        let postRef = Database.database().reference().child(Const.PostPath).child(postData.id!)
-        let comment = ["comment": postData.comment]
-        postRef.updateChildValues(comment)
-        print("\(String(describing: name))")
+        if commentData != "" {
+            postData.comment.append(message)
+            let postRef = Database.database().reference().child(Const.PostPath).child(postData.id!)
+            let comment = ["comment": postData.comment]
+            postRef.updateChildValues(comment)
+            print("\(String(describing: name))")
+        }
     }
     
     
