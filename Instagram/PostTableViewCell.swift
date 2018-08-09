@@ -37,9 +37,11 @@ class PostTableViewCell: UITableViewCell {
         let likeNumber = postData.likes.count
         likeLabel.text = "\(likeNumber)"
         //commentlabelの表示
+        var commentText =  ""
         for c in postData.comment {
-            self.commentLabel.text = "\(c)\n"
+             commentText += "\(c)\n"
         }
+        self.commentLabel.text = commentText
         
         //commentButtonの設定
         self.commentButton.setTitle("コメント", for: .normal)
